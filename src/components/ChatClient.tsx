@@ -13,17 +13,17 @@ import {
   IonButton 
 } from "@ionic/react";
 import socketIOClient from "socket.io-client";
-const ENDPOINT = "http://localhost:3000";
+const ENDPOINT = "http://localhost:8888";
 const socket = socketIOClient(ENDPOINT);
 
 function ChatClient() {
-  const [numberInRoom, setNumber] = useState("");
+  // const [numberInRoom, setNumber] = useState("");
   const [inRoom, setInRoom] = useState("");
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState("");
   const [leftChat, setLeftChat] = useState("");
   const [enterChat, setEnterChat] = useState("");
-
+  const [chatArr, setChatArr] = useState([]);
   const [showToast1, setShowToast1] = useState(false);
   const [showToast2, setShowToast2] = useState(false);
 
@@ -39,11 +39,11 @@ function ChatClient() {
       // console.log(data)
     });
     socket.on("hello", (data: any) => {
-      setNumber(data);
+      // setNumber(data);
       // console.log(data)
     });
     socket.on("bye", (data: any) => {
-      setNumber(data);
+      // setNumber(data);
       setLeftChat(data);
       setShowToast1(true)
     });
@@ -60,9 +60,23 @@ function ChatClient() {
     // console.log(isTyping+'is typing')
   };
 
+  const chatting = (e:any) => {
+    e.preventDefault();
+    const id = socket.id
+    socket.emit('message', {id:id , msg:input})
+    setInput('')
+    console.log('cahtttt')
+  }
+
   const usersInRoom = Object.values(inRoom).map((user) => (
     <IonItem>
       <IonLabel>User ID: {user}</IonLabel>
+    </IonItem>
+  ));
+
+  const chat = Object.values(chatArr).map((msg) => (
+    <IonItem>
+      <IonLabel>Message: {msg}</IonLabel>
     </IonItem>
   ));
   return (
@@ -98,14 +112,26 @@ function ChatClient() {
           position='middle'
         />
       </IonContent>
+      <IonContent>
+      <IonList>
+      <IonItem>
+      <IonLabel>
+        {chat}
+      </IonLabel>
+    </IonItem>
+      </IonList>
+      </IonContent>
       <IonItem>
         <IonLabel position="stacked">Enter chat message</IonLabel>
+        <form onSubmit={chatting}>
         <IonInput
+        ion-input='submit'
           value={input}
           placeholder="Shout out your people!"
           onInput={thing}
           onIonChange={(e) => setInput((e.target as HTMLTextAreaElement).value)}
         />
+        </form>
       </IonItem>
     </IonApp>
   );
