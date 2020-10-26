@@ -23,7 +23,7 @@ function ChatClient() {
   const [isTyping, setIsTyping] = useState("");
   const [leftChat, setLeftChat] = useState("");
   const [enterChat, setEnterChat] = useState("");
-  const [chatArr, setChatArr] = useState([]);
+  const [chatArr, setChatArr] = useState('');
   const [showToast1, setShowToast1] = useState(false);
   const [showToast2, setShowToast2] = useState(false);
 
@@ -49,19 +49,24 @@ function ChatClient() {
     });
     socket.on("otherTyping", (data: any) => {
       setIsTyping(data.id);
-      console.log(data.id);
+      // console.log(data.id);
       console.log(isTyping + "is typing");
     });
-  }, []);
-
-  const thing = () => {
-    const id = socket.id;
-    socket.emit("typing", { id });
-    // console.log(isTyping+'is typing')
-  };
-
-  const chatting = (e:any) => {
-    e.preventDefault();
+    socket.on("msg", (data: any) => {
+          // console.log(data)
+          setChatArr(data)
+        });
+      }, []);
+      
+      const thing = () => {
+        const id = socket.id;
+        socket.emit("typing", { id });
+        // console.log(isTyping+'is typing')
+      };
+      
+      const chatting = (e:any) => {
+        e.preventDefault();
+        console.log(chatArr)
     const id = socket.id
     socket.emit('message', {id:id , msg:input})
     setInput('')
@@ -70,13 +75,14 @@ function ChatClient() {
 
   const usersInRoom = Object.values(inRoom).map((user) => (
     <IonItem>
-      <IonLabel>User ID: {user}</IonLabel>
+    
+      <IonLabel key={user}>User ID: {user}</IonLabel>
     </IonItem>
   ));
 
-  const chat = Object.values(chatArr).map((msg) => (
+  const chat =Object.values(chatArr).map((msg) => (
     <IonItem>
-      <IonLabel>Message: {msg}</IonLabel>
+      <IonLabel >ID: {msg.id} , Message: {msg.msg}</IonLabel>
     </IonItem>
   ));
   return (
@@ -114,11 +120,7 @@ function ChatClient() {
       </IonContent>
       <IonContent>
       <IonList>
-      <IonItem>
-      <IonLabel>
-        {chat}
-      </IonLabel>
-    </IonItem>
+        {chat}the chat
       </IonList>
       </IonContent>
       <IonItem>
