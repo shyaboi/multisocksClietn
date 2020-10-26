@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   IonApp,
   IonHeader,
@@ -26,8 +26,21 @@ function ChatClient() {
   const [chatArr, setChatArr] = useState('');
   const [showToast1, setShowToast1] = useState(false);
   const [showToast2, setShowToast2] = useState(false);
+  
+  const bottomRef:any = useRef();
+  
+  const scrollToBottom = () => {
+      bottomRef.current.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+      });
+  };
+
 
   useEffect(() => {
+
+    scrollToBottom()
+
     socket.on("welcome", (data: any) => {
       setEnterChat(data);
       setShowToast2(true)
@@ -55,6 +68,7 @@ function ChatClient() {
     socket.on("msg", (data: any) => {
           // console.log(data)
           setChatArr(data)
+          scrollToBottom()
         });
       }, []);
       
@@ -63,13 +77,13 @@ function ChatClient() {
         socket.emit("typing", { id });
         // console.log(isTyping+'is typing')
       };
-      
       const chatting = (e:any) => {
         e.preventDefault();
         console.log(chatArr)
     const id = socket.id
     socket.emit('message', {id:id , msg:input})
     setInput('')
+    scrollToBottom()
     console.log('cahtttt')
   }
 
@@ -80,52 +94,45 @@ function ChatClient() {
     </IonItem>
   ));
   let chatLogArr = Object.values(chatArr) as any
-  const chat = chatLogArr.map((msg:any) => (
+  const chat = chatLogArr.map((msg:any ) => (
     <IonItem>
       <IonLabel >ID: {msg.id} , Message: {msg.msg}</IonLabel>
     </IonItem>
   ));
   return (
     <IonApp>
-      <IonHeader>
+  <IonHeader>
         <IonToolbar>
-          <IonTitle>
-            {" "}
-            {inRoom.length} {/* {inRoom} */}
-          </IonTitle>
+          <IonTitle>DingusChat</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
-        There are currently {inRoom.length} in the chat.
-        <IonList>{usersInRoom}</IonList>
+        {/* <IonList>{usersInRoom}</IonList> */}
         
-      </IonContent>
-      <IonContent>       
         <IonToast
           isOpen={showToast1}
           onDidDismiss={() => setShowToast1(false)}
           message={leftChat+' Left the chat :('}
           duration={600}
           position='middle'
-        />
-      </IonContent>
-      <IonContent>       
+          />
         <IonToast
           isOpen={showToast2}
           onDidDismiss={() => setShowToast2(false)}
           message={enterChat+'just joined chat!'}
           duration={600}
           position='middle'
-        />
-      </IonContent>
+          />
+          There are currently {inRoom.length} in the chat.
       <IonContent>
-      <IonList>
-        {chat}the chat
+      <IonList id='chatList'>
+        {chat}
+        <br></br>
+        <div ref={bottomRef} className="list-bottom">Bottom of the chat</div>
       </IonList>
       </IonContent>
       <IonItem>
         <IonLabel position="stacked">Enter chat message</IonLabel>
-        <form onSubmit={chatting}>
+        <form onSubmit={chatting} >
         <IonInput
         ion-input='submit'
           value={input}
@@ -135,6 +142,7 @@ function ChatClient() {
         />
         </form>
       </IonItem>
+      
     </IonApp>
   );
 }
