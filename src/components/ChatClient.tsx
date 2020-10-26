@@ -1,21 +1,46 @@
 import React, { useState, useEffect } from "react";
+import { IonApp, IonHeader,  IonToolbar,  IonTitle, IonContent, IonList, IonItem, IonLabel } from '@ionic/react';
 import socketIOClient from "socket.io-client";
-const ENDPOINT = "http://127.0.0.1:3000";
+const ENDPOINT = "http://localhost:3000";
+const socket = socketIOClient(ENDPOINT);
 
 function ChatClient() {
-  const [response, setResponse] = useState("");
+  const [numberInRoom, setNumber] = useState("");
+  const [inRoom, setInRoom] = useState("");
 
   useEffect(() => {
-    const socket = socketIOClient(ENDPOINT);
-    socket.on("hello", (hi: any) => {
-      setResponse(hi);
+    socket.on("welcome", (data: any) => {
+      setNumber(data);
+      // console.log(data)
     });
+    socket.on("inroom", (data: any) => {
+      setInRoom(data);
+      // console.log(data)
+    });
+    
   }, []);
-
+  const usersInRoom =Object.values(inRoom).map((user) => (
+<IonItem>
+        <IonLabel>{user}</IonLabel>
+      </IonItem>
+  ))
   return (
-    <p>
-      Something shoulkd be here {response}
-    </p>
+    <IonApp>
+    <IonHeader>
+      <IonToolbar>
+      <IonTitle> {numberInRoom}  {/* {inRoom} */}</IonTitle>
+      </IonToolbar>
+    </IonHeader>
+    <IonContent>
+Comense to chatting
+    </IonContent>
+    <IonContent>
+    {numberInRoom}
+      <IonList>
+       {usersInRoom}
+    </IonList>
+    </IonContent>
+  </IonApp>
   );
 }
 
