@@ -79,8 +79,8 @@ function ChatClient() {
       <IonLabel key={user}>User ID: {user}</IonLabel>
     </IonItem>
   ));
-
-  const chat =Object.values(chatArr).map((msg) => (
+  let chatLogArr = Object.values(chatArr) as any
+  const chat = chatLogArr.map((msg:any) => (
     <IonItem>
       <IonLabel >ID: {msg.id} , Message: {msg.msg}</IonLabel>
     </IonItem>
