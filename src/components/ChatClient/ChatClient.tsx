@@ -18,13 +18,12 @@ import {
   IonAvatar,
 } from "@ionic/react";
 import {  arrowBackCircle, peopleCircleOutline, imagesOutline, megaphoneOutline} from 'ionicons/icons';
-import TopMenu from '../TopMenu/TopMenu'
-
 import socketIOClient from "socket.io-client";
+const shyaboiMP3 = require ('./shyaboi.mp3')
 const ENDPOINT = "https://dinguschatserver.herokuapp.com/";
 const socket = socketIOClient(ENDPOINT);
-
 function ChatClient() {
+  
   const [numberInRoom, setNumber] = useState("");
   const [inRoom, setInRoom] = useState("");
   const [input, setInput] = useState("");
@@ -35,25 +34,25 @@ function ChatClient() {
   const [showToast1, setShowToast1] = useState(false);
   const [showToast2, setShowToast2] = useState(false);
   const [showModal, setShowModal] = useState(false);
-
+  
   const bottomRef:any = useRef();
   
   const scrollToBottom = () => {
-      bottomRef.current.scrollIntoView({
+    bottomRef.current.scrollIntoView({
       behavior: "smooth",
       block: "start",
-      });
+    });
   };
-
-
+  
+  const shyaboi = new Audio(shyaboiMP3)
+  
   useEffect(() => {
-
     scrollToBottom()
-
+    
     socket.on("welcome", (data: any) => {
       setEnterChat(data);
       setShowToast2(true)
-
+      
       // console.log(data);
     });
     socket.on("inroom", (data: any) => {
@@ -76,6 +75,7 @@ function ChatClient() {
     });
     socket.on("msg", (data: any) => {
           // console.log(data)
+          shyaboi.play()
           setChatArr(data)
           scrollToBottom()
         });
@@ -132,14 +132,14 @@ function ChatClient() {
           isOpen={showToast1}
           onDidDismiss={() => setShowToast1(false)}
           message={leftChat+' Left the chat :('}
-          duration={1200}
+          duration={1500}
           position='middle'
           />
         <IonToast
           isOpen={showToast2}
           onDidDismiss={() => setShowToast2(false)}
           message={enterChat+'just joined chat!'}
-          duration={1200}
+          duration={1500}
           position='middle'
           />
          

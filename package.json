@@ -6,6 +6,7 @@
   "dependencies": {
     "@capacitor/android": "^2.4.2",
     "@capacitor/core": "2.4.2",
+    "@ionic-native/native-audio": "^4.20.0",
     "@ionic/react": "^5.0.7",
     "@ionic/react-router": "^5.0.7",
     "@testing-library/react": "^9.4.0",
