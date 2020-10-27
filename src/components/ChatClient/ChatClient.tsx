@@ -20,6 +20,9 @@ import {
 import {  arrowBackCircle, peopleCircleOutline, imagesOutline, megaphoneOutline} from 'ionicons/icons';
 import socketIOClient from "socket.io-client";
 const shyaboiMP3 = require ('./shyaboi.mp3')
+const doorOpenMP3 = require ('./open_door_1.mp3')
+const closeDoorMP3 = require ('./close_door_1.mp3')
+
 const ENDPOINT = "https://dinguschatserver.herokuapp.com/";
 const socket = socketIOClient(ENDPOINT);
 function ChatClient() {
@@ -45,11 +48,14 @@ function ChatClient() {
   };
   
   const shyaboi = new Audio(shyaboiMP3)
+  const doorOpen = new Audio(doorOpenMP3)
+  const doorClose = new Audio(closeDoorMP3)
   
   useEffect(() => {
     scrollToBottom()
     
     socket.on("welcome", (data: any) => {
+      doorOpen.play()
       setEnterChat(data);
       setShowToast2(true)
       
@@ -64,6 +70,8 @@ function ChatClient() {
       // console.log(data)
     });
     socket.on("bye", (data: any) => {
+      doorClose.play()
+
       setNumber(data);
       setLeftChat(data);
       setShowToast1(true)
@@ -74,8 +82,11 @@ function ChatClient() {
       console.log(isTyping + "is typing");
     });
     socket.on("msg", (data: any) => {
-          // console.log(data)
           shyaboi.play()
+          setChatArr(data)
+          scrollToBottom()
+        });
+        socket.on("message", (data: any) => {
           setChatArr(data)
           scrollToBottom()
         });
