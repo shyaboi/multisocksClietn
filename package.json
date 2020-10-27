@@ -1,5 +1,5 @@
 {
-  "homepage": "https://shyaboi.github.io/multisocksClietn",
+  "homepage": "https://shyaboi.github.io/multisocksClietn/",
   "name": "reactdinguschat",
   "version": "0.0.1",
   "private": true,
@@ -27,7 +27,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "ionic build --prod --release",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "eject": "react-scripts eject"
