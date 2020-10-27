@@ -116,13 +116,22 @@ function ChatClient() {
   ));
   return (
     <IonApp>
-  <IonHeader id='inRoom' >
+  <IonHeader >
   <IonItem>
       <IonAvatar slot="start">
         <img src="https://i.ibb.co/k6yNxLh/ha.png" />
       </IonAvatar>
       <IonLabel>Dingus Chat</IonLabel>
-
+      <IonLabel>
+      <a href="http://dinguscrew.com:5000/forum">
+      <IonButton  color="secondary" expand="block" type='button'>Forum</IonButton>
+      </a>
+      </IonLabel>
+      <IonLabel>
+      <a href="http://dinguscrew.com:8080">
+      <IonButton color="secondary"  expand="block" type='button'>Wallpapers</IonButton>
+      </a>
+      </IonLabel>
         <p > Currently {inRoom.length} in the chat.</p>
     </IonItem>
       </IonHeader>
@@ -154,7 +163,7 @@ function ChatClient() {
 
       </IonList>
       <IonFab vertical="top" horizontal="end" slot="fixed">
-          <IonFabButton>
+          <IonFabButton color="secondary">
             <IonIcon icon={peopleCircleOutline} onClick={() => setShowModal(true)} />{inRoom.length}
           </IonFabButton>
         </IonFab>
@@ -169,15 +178,16 @@ function ChatClient() {
         <IonLabel position="stacked">Enter chat message</IonLabel>
         <form onSubmit={chatting} >
         <IonInput
+        color="secondary"
         ion-input='submit'
           value={input}
           placeholder="Shout out your people!"
           onInput={thing}
           onIonChange={(e) => setInput((e.target as HTMLTextAreaElement).value)}
         />
-        
         </form>
       </IonItem>
+        <IonButton slot="end" expand="full" shape='round' onSubmit={chatting} onClick={chatting} color="secondary">Send</IonButton>
       
     </IonApp>
   );
