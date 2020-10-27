@@ -17,7 +17,7 @@ import {
   IonButton,
   IonAvatar,
 } from "@ionic/react";
-import {  arrowBackCircle, peopleCircleOutline } from 'ionicons/icons';
+import {  arrowBackCircle, peopleCircleOutline, imagesOutline, megaphoneOutline} from 'ionicons/icons';
 import TopMenu from '../TopMenu/TopMenu'
 
 import socketIOClient from "socket.io-client";
@@ -122,16 +122,7 @@ function ChatClient() {
         <img src="https://i.ibb.co/k6yNxLh/ha.png" />
       </IonAvatar>
       <IonLabel>Dingus Chat</IonLabel>
-      <IonLabel>
-      <a href="http://dinguscrew.com:5000/forum">
-      <IonButton  color="secondary" expand="block" type='button'>Forum</IonButton>
-      </a>
-      </IonLabel>
-      <IonLabel>
-      <a href="http://dinguscrew.com:8080">
-      <IonButton color="secondary"  expand="block" type='button'>Wallpapers</IonButton>
-      </a>
-      </IonLabel>
+      
         <p > Currently {inRoom.length} in the chat.</p>
     </IonItem>
       </IonHeader>
@@ -166,12 +157,22 @@ function ChatClient() {
           <IonFabButton color="secondary">
             <IonIcon icon={peopleCircleOutline} onClick={() => setShowModal(true)} />{inRoom.length}
           </IonFabButton>
+          <a href="http://dinguscrew.com:8080">
+          <IonFabButton color="secondary">
+            <IonIcon icon={imagesOutline} />
+          </IonFabButton>
+          </a>
+          <a href="http://dinguscrew.com:5000/forum">
+          <IonFabButton color="secondary">
+            <IonIcon icon={megaphoneOutline} />
+          </IonFabButton>
+          </a>
         </IonFab>
       <IonModal isOpen={showModal} cssClass='my-custom-class'>
         <IonList>
           {usersInRoom}
         </IonList>
-        <IonButton onClick={() => setShowModal(false)}>Close Modal</IonButton>
+        <IonButton color="secondary" onClick={() => setShowModal(false)}>Close</IonButton>
       </IonModal>
       </IonContent>
       <IonItem>
