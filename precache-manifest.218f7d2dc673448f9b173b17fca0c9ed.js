@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "2b802de35bb13c2c589fac97439e107a",
+    "revision": "bcf61fd058a21f52e64f44f5a711de28",
     "url": "/multisocksClietn/index.html"
   },
   {
