@@ -10,14 +10,22 @@ import {
   IonLabel,
   IonInput,
   IonToast,
-  IonButton 
+  IonFab, 
+  IonFabButton, 
+  IonIcon,
+  IonModal, 
+  IonButton,
+  IonAvatar,
 } from "@ionic/react";
+import {  arrowBackCircle, peopleCircleOutline } from 'ionicons/icons';
+import TopMenu from '../TopMenu/TopMenu'
+
 import socketIOClient from "socket.io-client";
-const ENDPOINT = "http://localhost:8888";
+const ENDPOINT = "https://dinguschatserver.herokuapp.com/";
 const socket = socketIOClient(ENDPOINT);
 
 function ChatClient() {
-  // const [numberInRoom, setNumber] = useState("");
+  const [numberInRoom, setNumber] = useState("");
   const [inRoom, setInRoom] = useState("");
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState("");
@@ -26,7 +34,8 @@ function ChatClient() {
   const [chatArr, setChatArr] = useState('');
   const [showToast1, setShowToast1] = useState(false);
   const [showToast2, setShowToast2] = useState(false);
-  
+  const [showModal, setShowModal] = useState(false);
+
   const bottomRef:any = useRef();
   
   const scrollToBottom = () => {
@@ -52,11 +61,11 @@ function ChatClient() {
       // console.log(data)
     });
     socket.on("hello", (data: any) => {
-      // setNumber(data);
+      setNumber(data);
       // console.log(data)
     });
     socket.on("bye", (data: any) => {
-      // setNumber(data);
+      setNumber(data);
       setLeftChat(data);
       setShowToast1(true)
     });
@@ -96,15 +105,26 @@ function ChatClient() {
   let chatLogArr = Object.values(chatArr) as any
   const chat = chatLogArr.map((msg:any ) => (
     <IonItem>
-      <IonLabel >ID: {msg.id} , Message: {msg.msg}</IonLabel>
-    </IonItem>
+
+      <IonLabel >
+        <h4>ID: {msg.id}</h4>
+<br></br>
+      <p >Message: {msg.msg}</p>
+      </IonLabel>
+      </IonItem>
+
   ));
   return (
     <IonApp>
-  <IonHeader>
-        <IonToolbar>
-          <IonTitle>DingusChat</IonTitle>
-        </IonToolbar>
+  <IonHeader id='inRoom' >
+  <IonItem>
+      <IonAvatar slot="start">
+        <img src="https://i.ibb.co/k6yNxLh/ha.png" />
+      </IonAvatar>
+      <IonLabel>Dingus Chat</IonLabel>
+
+        <p > Currently {inRoom.length} in the chat.</p>
+    </IonItem>
       </IonHeader>
         {/* <IonList>{usersInRoom}</IonList> */}
         
@@ -112,23 +132,38 @@ function ChatClient() {
           isOpen={showToast1}
           onDidDismiss={() => setShowToast1(false)}
           message={leftChat+' Left the chat :('}
-          duration={600}
+          duration={1200}
           position='middle'
           />
         <IonToast
           isOpen={showToast2}
           onDidDismiss={() => setShowToast2(false)}
           message={enterChat+'just joined chat!'}
-          duration={600}
+          duration={1200}
           position='middle'
           />
-          There are currently {inRoom.length} in the chat.
+         
       <IonContent>
       <IonList id='chatList'>
         {chat}
         <br></br>
+
+        <br></br>
+        <br></br>
         <div ref={bottomRef} className="list-bottom">Bottom of the chat</div>
+
       </IonList>
+      <IonFab vertical="top" horizontal="end" slot="fixed">
+          <IonFabButton>
+            <IonIcon icon={peopleCircleOutline} onClick={() => setShowModal(true)} />{inRoom.length}
+          </IonFabButton>
+        </IonFab>
+      <IonModal isOpen={showModal} cssClass='my-custom-class'>
+        <IonList>
+          {usersInRoom}
+        </IonList>
+        <IonButton onClick={() => setShowModal(false)}>Close Modal</IonButton>
+      </IonModal>
       </IonContent>
       <IonItem>
         <IonLabel position="stacked">Enter chat message</IonLabel>
@@ -140,6 +175,7 @@ function ChatClient() {
           onInput={thing}
           onIonChange={(e) => setInput((e.target as HTMLTextAreaElement).value)}
         />
+        
         </form>
       </IonItem>
       
