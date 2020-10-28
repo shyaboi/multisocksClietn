@@ -53,6 +53,17 @@ function ChatClient() {
   
   useEffect(() => {
     scrollToBottom()
+
+    const openMediaDevices = async (constraints:any) => {
+      return await navigator.mediaDevices.getUserMedia(constraints);
+  }
+  
+  try {
+      const stream = openMediaDevices({'video':true,'audio':true});
+      console.log('Got MediaStream:', stream);
+  } catch(error) {
+      console.error('Error accessing media devices.', error);
+  }
     
     socket.on("welcome", (data: any) => {
       doorOpen.play()
@@ -192,6 +203,7 @@ function ChatClient() {
         <IonInput
         color="secondary"
         ion-input='submit'
+        size={350}
           value={input}
           placeholder="Shout out your people!"
           onInput={thing}
