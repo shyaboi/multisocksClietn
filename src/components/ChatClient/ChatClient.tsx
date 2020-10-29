@@ -1,3 +1,4 @@
+import Voice from '../Voice/Voice'
 import React, { useState, useEffect, useRef } from "react";
 import {
   IonApp,
@@ -22,7 +23,6 @@ import socketIOClient from "socket.io-client";
 const shyaboiMP3 = require ('./shyaboi.mp3')
 const doorOpenMP3 = require ('./open_door_1.mp3')
 const closeDoorMP3 = require ('./close_door_1.mp3')
-
 const ENDPOINT = "https://dinguschatserver.herokuapp.com/";
 const socket = socketIOClient(ENDPOINT);
 function ChatClient() {
@@ -57,14 +57,7 @@ function ChatClient() {
     const openMediaDevices = async (constraints:any) => {
       return await navigator.mediaDevices.getUserMedia(constraints);
   }
-  
-  try {
-      const stream = openMediaDevices({'video':true,'audio':true});
-      console.log('Got MediaStream:', stream);
-  } catch(error) {
-      console.error('Error accessing media devices.', error);
-  }
-    
+
     socket.on("welcome", (data: any) => {
       doorOpen.play()
       setEnterChat(data);
@@ -197,6 +190,7 @@ function ChatClient() {
         <IonButton color="secondary" onClick={() => setShowModal(false)}>Close</IonButton>
       </IonModal>
       </IonContent>
+      <Voice />
       <IonItem>
         <IonLabel position="stacked">Enter chat message</IonLabel>
         <form onSubmit={chatting} >
