@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/multisocksClietn/precache-manifest.218f7d2dc673448f9b173b17fca0c9ed.js"
+  "/multisocksClietn/precache-manifest.6b9d456b38a6ddf96a6274c25d673e24.js"
 );
 
 self.addEventListener('message', (event) => {
