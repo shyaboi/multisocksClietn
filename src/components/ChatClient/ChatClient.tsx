@@ -198,7 +198,6 @@ function ChatClient() {
           </IonButton>
         </IonModal>
       </IonContent>
-      <Voice />
       <IonItem>
         <IonLabel position="stacked">Enter chat message</IonLabel>
         <form onSubmit={chatting}>

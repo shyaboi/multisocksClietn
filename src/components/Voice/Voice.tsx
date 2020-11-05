@@ -10,7 +10,8 @@
 // };
 
 
-// function Voice() {
+function Voice() {
+  console.log('voice currently not performant')
 //   // const [muted, setMuted] = useState(false);
 
 //   // const audio = useRef();
@@ -88,6 +89,6 @@
 //       </header>
 //     </div>
 //   );
-// }
+}
 
-// export default Voice;
+export default Voice;
