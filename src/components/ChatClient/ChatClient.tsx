@@ -1,3 +1,4 @@
+import Profile from "../ProfileMod/Profile";
 // import Voice from "../Voice/Voice";
 import React, { useState, useEffect, useRef } from "react";
 import {
@@ -17,10 +18,14 @@ import {
   IonModal,
   IonButton,
   IonAvatar,
+  IonGrid,
+  IonRow,
+  IonCol,
 } from "@ionic/react";
 import {
   // arrowBackCircle,
   peopleCircleOutline,
+  personOutline,
   imagesOutline,
   megaphoneOutline,
 } from "ionicons/icons";
@@ -30,7 +35,6 @@ const doorOpenMP3 = require("./open_door_1.mp3");
 const closeDoorMP3 = require("./close_door_1.mp3");
 const ENDPOINT = "https://dinguschatserver.herokuapp.com/";
 const socket = socketIOClient(ENDPOINT);
-
 
 function ChatClient() {
   const [numberInRoom, setNumber] = useState("");
@@ -42,7 +46,8 @@ function ChatClient() {
   const [chatArr, setChatArr] = useState("");
   const [showToast1, setShowToast1] = useState(false);
   const [showToast2, setShowToast2] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  const [showUserListModal, setshowUserListModal] = useState(false);
+  const [showUserProfileModal, setshowUserProfileModal] = useState(false);
 
   const bottomRef: any = useRef();
 
@@ -59,10 +64,6 @@ function ChatClient() {
 
   useEffect(() => {
     scrollToBottom();
-
-    // const openMediaDevices = async (constraints: any) => {
-    //   return await navigator.mediaDevices.getUserMedia(constraints);
-    // };
 
     socket.on("welcome", (data: any) => {
       doorOpen.play();
@@ -109,13 +110,20 @@ function ChatClient() {
   };
   const chatting = (e: any) => {
     e.preventDefault();
-    console.log(chatArr);
+    // console.log(chatArr);
     const id = socket.id;
     socket.emit("message", { id: id, msg: input });
     setInput("");
     scrollToBottom();
-    console.log("cahtttt");
+    // console.log("cahtttt");
   };
+
+  const saveProfile = ()=> {
+    let uName = localStorage.getItem("UserName") || socket.id
+    socket.id = uName
+    console.log('profile socket id changed' ,socket.id)
+
+  }
 
   const usersInRoom = Object.values(inRoom).map((user) => (
     <IonItem>
@@ -176,7 +184,7 @@ function ChatClient() {
           <IonFabButton color="secondary">
             <IonIcon
               icon={peopleCircleOutline}
-              onClick={() => setShowModal(true)}
+              onClick={() => setshowUserListModal(true)}
             />
             {inRoom.length}
           </IonFabButton>
@@ -190,12 +198,44 @@ function ChatClient() {
               <IonIcon icon={megaphoneOutline} />
             </IonFabButton>
           </a>
+          <IonFabButton color="secondary">
+            <IonIcon
+              icon={personOutline}
+              onClick={() => setshowUserProfileModal(true)}
+            />
+          </IonFabButton>
         </IonFab>
-        <IonModal isOpen={showModal} cssClass="my-custom-class">
+        <IonModal isOpen={showUserListModal} cssClass="my-custom-class">
           <IonList>{usersInRoom}</IonList>
-          <IonButton color="secondary" onClick={() => setShowModal(false)}>
+          <IonButton
+            color="secondary"
+            onClick={() => setshowUserListModal(false)}
+          >
             Close
           </IonButton>
+        </IonModal>
+        <IonModal isOpen={showUserProfileModal} cssClass="my-custom-class">
+          <Profile />
+          <IonGrid>
+            <IonRow>
+              <IonCol>
+                  <IonButton
+                    color="secondary"
+                    onClick={() => setshowUserProfileModal(false)}
+                  >
+                    Close
+                  </IonButton>
+              </IonCol>
+              <IonCol>
+                 <IonButton
+                    color="secondary"
+                    onClick={saveProfile}
+                  >
+                    Save
+                  </IonButton>
+              </IonCol>
+            </IonRow>
+          </IonGrid>
         </IonModal>
       </IonContent>
       <IonItem>
