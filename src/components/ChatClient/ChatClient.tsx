@@ -30,11 +30,13 @@ import {
   megaphoneOutline,
 } from "ionicons/icons";
 import socketIOClient from "socket.io-client";
+const ENDPOINT = "http://localhost:8888";
+// const ENDPOINT = "https://dinguschatserver.herokuapp.com/";
+
+const socket = socketIOClient(ENDPOINT);
 const shyaboiMP3 = require("./shyaboi.mp3");
 const doorOpenMP3 = require("./open_door_1.mp3");
 const closeDoorMP3 = require("./close_door_1.mp3");
-const ENDPOINT = "https://dinguschatserver.herokuapp.com/";
-const socket = socketIOClient(ENDPOINT);
 
 function ChatClient() {
   const [numberInRoom, setNumber] = useState("");
@@ -51,6 +53,7 @@ function ChatClient() {
 
   const bottomRef: any = useRef();
 
+
   const scrollToBottom = () => {
     bottomRef.current.scrollIntoView({
       behavior: "smooth",
@@ -63,14 +66,23 @@ function ChatClient() {
   const doorClose = new Audio(closeDoorMP3);
 
   useEffect(() => {
+    
+    let uName = localStorage.getItem("UserName") || socket.id
+    socket.id = uName
+    socket.emit('idCheck', socket.id)
+    
+   
     scrollToBottom();
+    
+    socket.on("idCheck", (data: any) => {
+    console.log(data)
+    })
+
 
     socket.on("welcome", (data: any) => {
       doorOpen.play();
       setEnterChat(data);
       setShowToast2(true);
-
-      // console.log(data);
     });
     socket.on("inroom", (data: any) => {
       setInRoom(data);
@@ -122,7 +134,7 @@ function ChatClient() {
     let uName = localStorage.getItem("UserName") || socket.id
     socket.id = uName
     console.log('profile socket id changed' ,socket.id)
-
+    socket.emit('idCheck', uName)
   }
 
   const usersInRoom = Object.values(inRoom).map((user) => (

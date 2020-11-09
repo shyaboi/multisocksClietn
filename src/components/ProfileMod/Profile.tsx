@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { IonContent, IonHeader, IonAvatar, IonTitle, IonToolbar, IonInput, IonItem, IonLabel, IonList } from '@ionic/react';
 
+
+
 export const Profile: React.FC = () => {
 
   const [userName, setUserName] = useState("");
@@ -8,7 +10,6 @@ export const Profile: React.FC = () => {
 
 
   const stateToStorage = ()=> {
-      console.log(userName,text);
       localStorage.setItem("UserName",userName)}
   return (
         <IonContent>
