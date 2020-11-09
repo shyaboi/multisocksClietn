@@ -131,7 +131,7 @@ function ChatClient() {
   };
 
   const saveProfile = ()=> {
-    let uName = localStorage.getItem("UserName") || socket.id
+    let uName = localStorage.getItem("UserName") || "RandomUser"+Math.floor(Math.random()*10000)
     socket.id = uName
     console.log('profile socket id changed' ,socket.id)
     socket.emit('idCheck', uName)
@@ -176,7 +176,7 @@ function ChatClient() {
       <IonToast
         isOpen={showToast2}
         onDidDismiss={() => setShowToast2(false)}
-        message={enterChat + "just joined chat!"}
+        message={'This Dingus ~'+ enterChat + "~ Just Joined Chat!"}
         duration={1500}
         position="middle"
       />
@@ -185,7 +185,6 @@ function ChatClient() {
         <IonList id="chatList">
           {chat}
           <br></br>
-
           <br></br>
           <br></br>
           <div ref={bottomRef} className="list-bottom">

@@ -1,16 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IonContent, IonHeader, IonAvatar, IonTitle, IonToolbar, IonInput, IonItem, IonLabel, IonList } from '@ionic/react';
 
 
 
-export const Profile: React.FC = () => {
 
+
+export const Profile: React.FC = () => {
+  
   const [userName, setUserName] = useState("");
   const [text, setText] = useState<string>();
-
+  
+  useEffect(() => {
+  
+    setUserName(localStorage.getItem("UserName")||"RandomUser"+Math.floor(Math.random()*10000))
+   }, []);
 
   const stateToStorage = ()=> {
       localStorage.setItem("UserName",userName)}
+
   return (
         <IonContent>
       <IonHeader>
@@ -25,9 +32,9 @@ export const Profile: React.FC = () => {
       </IonHeader>
         <IonList>
         <IonItem>
-            <IonInput value={userName} placeholder="UserName"
+            <IonInput value={userName} placeholder={userName}
             onIonChange={e => setUserName(e.detail.value!)}
-            onClick={stateToStorage}
+            onIonInput={stateToStorage}
             >  
             </IonInput>
           </IonItem>
