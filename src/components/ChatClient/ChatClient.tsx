@@ -66,10 +66,10 @@ function ChatClient() {
   const doorClose = new Audio(closeDoorMP3);
 
   useEffect(() => {
-
-    let uName = localStorage.getItem("UserName") || socket.id
-    socket.id = uName
-    socket.emit('idCheck', socket.id)
+  let uName = localStorage.getItem("UserName") || "RandomUser"+Math.floor(Math.random()*10000)
+  socket.id = uName
+  socket.emit('idCheck', socket.id)
+  
     
    
     scrollToBottom();
