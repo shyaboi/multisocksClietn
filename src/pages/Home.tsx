@@ -1,4 +1,4 @@
-import { IonContent, IonHeader, IonPage,  IonToolbar, IonTitle, IonChip,IonLabel } from '@ionic/react';
+import { IonContent,  IonPage, } from '@ionic/react';
 import React from 'react';
 import ChatClient from '../components/ChatClient/ChatClient';
 

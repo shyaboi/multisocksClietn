@@ -3,8 +3,8 @@ import React, { useState, useEffect, useRef } from "react";
 import {
   IonApp,
   IonHeader,
-  IonToolbar,
-  IonTitle,
+  // IonToolbar,
+  // IonTitle,
   IonContent,
   IonList,
   IonItem,
@@ -19,7 +19,7 @@ import {
   IonAvatar,
 } from "@ionic/react";
 import {
-  arrowBackCircle,
+  // arrowBackCircle,
   peopleCircleOutline,
   imagesOutline,
   megaphoneOutline,
@@ -60,9 +60,9 @@ function ChatClient() {
   useEffect(() => {
     scrollToBottom();
 
-    const openMediaDevices = async (constraints: any) => {
-      return await navigator.mediaDevices.getUserMedia(constraints);
-    };
+    // const openMediaDevices = async (constraints: any) => {
+    //   return await navigator.mediaDevices.getUserMedia(constraints);
+    // };
 
     socket.on("welcome", (data: any) => {
       doorOpen.play();
