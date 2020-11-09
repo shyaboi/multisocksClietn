@@ -176,7 +176,7 @@ function ChatClient() {
       <IonToast
         isOpen={showToast2}
         onDidDismiss={() => setShowToast2(false)}
-        message={'This Dingus ~'+ enterChat + "~ Just Joined Chat!"}
+        message={'This Dingus ~ '+ enterChat + " ~ Just Joined Chat!"}
         duration={1500}
         position="middle"
       />

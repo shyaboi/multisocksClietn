@@ -9,13 +9,16 @@ export const Profile: React.FC = () => {
   
   const [userName, setUserName] = useState("");
   const [text, setText] = useState<string>();
+  const [avatar, setAvatar] = useState('');
   
   useEffect(() => {
-  
     setUserName(localStorage.getItem("UserName")||"RandomUser"+Math.floor(Math.random()*10000))
+    setAvatar(localStorage.getItem("Avatar")||"https://placekitten.com/200/300")
+
    }, []);
 
   const stateToStorage = ()=> {
+      localStorage.setItem("Avatar",avatar)
       localStorage.setItem("UserName",userName)}
 
   return (
@@ -26,7 +29,7 @@ export const Profile: React.FC = () => {
           <IonTitle>Dingus Crew Profile</IonTitle>
         </IonToolbar>
           <IonAvatar>
-      <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y" />
+      <img src={avatar} />
     </IonAvatar>
           </IonItem>
       </IonHeader>
@@ -35,12 +38,19 @@ export const Profile: React.FC = () => {
             <IonInput value={userName} placeholder={userName}
             onIonChange={e => setUserName(e.detail.value!)}
             onIonInput={stateToStorage}
+            onClick={stateToStorage}
             >  
             </IonInput>
           </IonItem>
           <IonItem>
-            <IonLabel position="floating">Other Options</IonLabel>
-            <IonInput value={text}></IonInput>
+            <IonLabel position="floating">Avatar URL</IonLabel>
+            <IonInput 
+            onIonChange={e => setAvatar(e.detail.value!)}
+            onIonInput={stateToStorage}
+            onClick={stateToStorage}
+            placeholder={avatar}
+            value={avatar}
+            ></IonInput>
           </IonItem>
           <IonItem>
             <IonLabel position="floating">A 3rd thing</IonLabel>
