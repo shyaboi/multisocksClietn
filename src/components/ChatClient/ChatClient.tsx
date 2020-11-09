@@ -30,8 +30,8 @@ import {
   megaphoneOutline,
 } from "ionicons/icons";
 import socketIOClient from "socket.io-client";
-const ENDPOINT = "http://localhost:8888";
-// const ENDPOINT = "https://dinguschatserver.herokuapp.com/";
+// const ENDPOINT = "http://localhost:8888";
+const ENDPOINT = "https://dinguschatserver.herokuapp.com/";
 
 const socket = socketIOClient(ENDPOINT);
 const shyaboiMP3 = require("./shyaboi.mp3");
@@ -66,7 +66,7 @@ function ChatClient() {
   const doorClose = new Audio(closeDoorMP3);
 
   useEffect(() => {
-    
+
     let uName = localStorage.getItem("UserName") || socket.id
     socket.id = uName
     socket.emit('idCheck', socket.id)
