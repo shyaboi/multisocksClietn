@@ -31,7 +31,9 @@ import {
 } from "ionicons/icons";
 import socketIOClient from "socket.io-client";
 // const ENDPOINT = "http://localhost:8888";
-const ENDPOINT = "https://dinguschatserver.herokuapp.com/";
+// const ENDPOINT = "https://dinguschatserver.herokuapp.com/";
+const ENDPOINT = "http://radmobile.net";
+
 
 const socket = socketIOClient(ENDPOINT);
 const shyaboiMP3 = require("./shyaboi.mp3");
@@ -67,8 +69,11 @@ function ChatClient() {
 
   useEffect(() => {
   let uName = localStorage.getItem("UserName") || "RandomUser"+Math.floor(Math.random()*10000)
+  let avatar = localStorage.getItem("Avatar")||"https://placekitten.com/200/300"
+
   socket.id = uName
   socket.emit('idCheck', socket.id)
+  socket.emit('idCheck', {uName,avatar})
   
     
    
@@ -132,9 +137,11 @@ function ChatClient() {
 
   const saveProfile = ()=> {
     let uName = localStorage.getItem("UserName") || "RandomUser"+Math.floor(Math.random()*10000)
+    let avatar = localStorage.getItem("Avatar")||"https://placekitten.com/200/300"
+
     socket.id = uName
     console.log('profile socket id changed' ,socket.id)
-    socket.emit('idCheck', uName)
+    socket.emit('idCheck', {uName,avatar})
   }
 
   const usersInRoom = Object.values(inRoom).map((user) => (
